@@ -54,7 +54,7 @@ contract RebaseTokenTest is Test {
         amount = bound(amount, 1e5, type(uint96).max); // Bound the amount to a reasonable range
         //1. deposit
         vm.startPrank(user);
-        vm.deal(user, amount+1); // Give user some ether
+        vm.deal(user, amount + 1); // Give user some ether
         vault.deposit{value: amount}(); // User deposits ether into the vault
         //2. check our rebase token balance
         uint256 startBalance = rebaseToken.balanceOf(user);
