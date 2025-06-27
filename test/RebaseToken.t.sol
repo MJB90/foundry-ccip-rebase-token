@@ -49,4 +49,22 @@ contract RebaseTokenTest is Test {
 
         assertApproxEqAbs(endBalance - midBalance, midBalance - startBalance, 1); // Check if the increase in balance is linear
     }
+
+    function testRedeemStraightAway(uint256 amount) public {
+        amount = bound(amount, 1e5, type(uint96).max); // Bound the amount to a reasonable range
+        //1. deposit
+        vm.startPrank(user);
+        vm.deal(user, amount+1); // Give user some ether
+        vault.deposit{value: amount}(); // User deposits ether into the vault
+        //2. check our rebase token balance
+        uint256 startBalance = rebaseToken.balanceOf(user);
+        console.log("startBalance: %s", startBalance);
+        assertEq(startBalance, amount); // Check if the balance is equal to the deposited amount
+        //3. redeem straight away
+        vault.redeem(type(uint256).max); // User redeems their tokens for ether
+        assertEq(rebaseToken.balanceOf(user), 0); // Check if the user's rebase token balance is zero
+        assertApproxEqAbs(address(user).balance, amount, 1); // Check if the ether balance is equal to the deposited amount
+
+        vm.stopPrank();
+    }
 }
