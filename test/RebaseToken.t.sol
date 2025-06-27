@@ -28,6 +28,13 @@ contract RebaseTokenTest is Test {
         vm.stopPrank();
     }
 
+    function addRewardsToVault(uint256 rewardAmount) public {
+        (bool success,) = payable(address(vault)).call{value: rewardAmount}(""); // Send some ether to the vault
+        if (!success) {
+            revert("Failed to send ether to vault");
+        }
+    }
+
     function testDepositLinear(uint256 amount) public {
         amount = bound(amount, 1e5, type(uint96).max); // Bound the amount to a reasonable range
         //1. deposit
@@ -66,5 +73,29 @@ contract RebaseTokenTest is Test {
         assertApproxEqAbs(address(user).balance, amount, 1); // Check if the ether balance is equal to the deposited amount
 
         vm.stopPrank();
+    }
+
+    function testRedeemAfterTimePassed(uint256 depositAmount, uint256 time) public {
+        time = bound(time, 1000, type(uint96).max); // Bound the time to a reasonable range
+        depositAmount = bound(depositAmount, 1e5, type(uint96).max); // Bound the amount to a reasonable range
+
+        vm.deal(user, depositAmount); // Give user some ether
+        vm.prank(user);
+        vault.deposit{value: depositAmount}(); // User deposits ether into the vault
+
+        vm.warp(block.timestamp + time); // Warp the time by the specified amount
+        uint256 balance = rebaseToken.balanceOf(user);
+
+        //Add rewards to the vault
+        vm.prank(owner);
+        vm.deal(owner, balance - depositAmount); // Give owner some ether to add as rewards
+        addRewardsToVault(balance - depositAmount); // Add some ether to the vault as rewards
+
+        vm.prank(user);
+        vault.redeem(type(uint256).max); // User redeems their tokens for ether
+        uint256 etherBalance = address(user).balance;
+
+        assertEq(etherBalance, balance);
+        assertGt(etherBalance, depositAmount);
     }
 }
