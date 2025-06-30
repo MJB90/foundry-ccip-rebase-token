@@ -145,7 +145,7 @@ contract RebaseTokenTest is Test {
     }
 
     function testGetPrincipalBalance(uint256 amount) public {
-        amount = bound(amount,1e5, type(uint96).max); // Bound the amount to a reasonable range
+        amount = bound(amount, 1e5, type(uint96).max); // Bound the amount to a reasonable range
         vm.deal(user, amount); // Give user some ether
         vm.prank(user);
         vault.deposit{value: amount}(); // User deposits ether into the vault
