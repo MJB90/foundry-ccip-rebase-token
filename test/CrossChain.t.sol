@@ -13,6 +13,7 @@ import {RegistryModuleOwnerCustom} from "@ccip/src/v0.8/ccip/tokenAdminRegistry/
 import {TokenAdminRegistry} from "@ccip/src/v0.8/ccip/tokenAdminRegistry/TokenAdminRegistry.sol";
 import {TokenPool} from "@ccip/src/v0.8/ccip/pools/TokenPool.sol";
 import {RateLimiter} from "@ccip/src/v0.8/ccip/libraries/RateLimiter.sol";
+import {Client} from "@ccip/src/v0.8/ccip/libraries/Client.sol";
 
 contract CrossChainTest is Test {
     address public owner = makeAddr("owner");
@@ -128,4 +129,30 @@ contract CrossChainTest is Test {
         });
         TokenPool(localPool).applyChainUpdates(chainsToAdd);
     }
+
+    // function bridgeTokens(
+    //     uint256 amountToBridge,
+    //     uint256 localFork,
+    //     uint256 remoteFork,
+    //     Register.NetworkDetails memory localNetworkDetails,
+    //     Register.NetworkDetails memory remoteNetworkDetails,
+    //     RebaseToken localToken,
+    //     RebaseToken remoteToken
+    // ) public {
+    //     vm.selectFork(localFork);
+    //     Client.EVMTokenAmount[] memory tokenAmounts = new Client.EVMTokenAmount[](1);
+    //     tokenAmounts[0] = Client.EVMTokenAmount({
+    //         token: address(localToken),
+    //         amount: amountToBridge
+    //     });
+    //     Client.EVM2AnyMessage memory message = Client.EVM2AnyMessage({
+    //         receiver: abi.encode(user),
+    //         data: "",
+    //         tokenAmounts: tokenAmounts,
+    //         feeToken: localNetworkDetails.linkAddress,
+    //         extraArgs: Client._argsToBytes(Client.EVMExtraArgsV1({gasLimit: 0}))
+    //     });
+    //     vm.startPrank(user);
+
+    // }
 }
