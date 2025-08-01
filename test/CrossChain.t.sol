@@ -177,31 +177,31 @@ contract CrossChainTest is Test {
         assertEq(remoteUserInterestRate, localUserInterestRate);
     }
 
-    // function testBridgeAllTokens() public {
-    //     vm.selectFork(sepoliaFork);
-    //     vm.deal(user, SEND_VALUE);
-    //     vm.prank(user);
-    //     vault.deposit{value: SEND_VALUE}(); // User deposits ether into the vault
-    //     assertEq(sepoliaToken.balanceOf(user), SEND_VALUE); // Check if the user's rebase token balance is equal to the deposited amount
-    //     bridgeTokens(
-    //         SEND_VALUE,
-    //         sepoliaFork,
-    //         arbSepoliaFork,
-    //         sepoliaNetworkDetails,
-    //         arbSepoliaNetworkDetails,
-    //         sepoliaToken,
-    //         arbSepoliaToken
-    //     );
-    //     vm.selectFork(arbSepoliaFork);
-    //     vm.warp(block.timestamp + 20 minutes);
-    //     bridgeTokens(
-    //         arbSepoliaToken.balanceOf(user),
-    //         arbSepoliaFork,
-    //         sepoliaFork,
-    //         arbSepoliaNetworkDetails,
-    //         sepoliaNetworkDetails,
-    //         arbSepoliaToken,
-    //         sepoliaToken
-    //     );
-    // }
+    function testBridgeAllTokens() public {
+        vm.selectFork(sepoliaFork);
+        vm.deal(user, SEND_VALUE);
+        vm.prank(user);
+        vault.deposit{value: SEND_VALUE}(); // User deposits ether into the vault
+        assertEq(sepoliaToken.balanceOf(user), SEND_VALUE); // Check if the user's rebase token balance is equal to the deposited amount
+        bridgeTokens(
+            SEND_VALUE,
+            sepoliaFork,
+            arbSepoliaFork,
+            sepoliaNetworkDetails,
+            arbSepoliaNetworkDetails,
+            sepoliaToken,
+            arbSepoliaToken
+        );
+        vm.selectFork(arbSepoliaFork);
+        vm.warp(block.timestamp + 20 minutes);
+        bridgeTokens(
+            arbSepoliaToken.balanceOf(user),
+            arbSepoliaFork,
+            sepoliaFork,
+            arbSepoliaNetworkDetails,
+            sepoliaNetworkDetails,
+            arbSepoliaToken,
+            sepoliaToken
+        );
+    }
 }
