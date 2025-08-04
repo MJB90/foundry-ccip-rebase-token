@@ -11,10 +11,10 @@ contract BridgeTokens is Script {
     function run(
         address receiverAddress,
         uint64 destinationChainSelector,
-        address routerAddress,
         address tokenToSendAddress,
         uint256 amountToSend,
-        address linkTokenAddress
+        address linkTokenAddress,
+        address routerAddress
     ) public {
         Client.EVMTokenAmount[] memory tokenAmounts = new Client.EVMTokenAmount[](1);
         tokenAmounts[0] = Client.EVMTokenAmount({token: tokenToSendAddress, amount: amountToSend});
