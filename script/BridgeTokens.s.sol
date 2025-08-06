@@ -7,7 +7,7 @@ import {IRouterClient} from "@ccip/src/v0.8/ccip/interfaces/IRouterClient.sol";
 import {Client} from "@ccip/src/v0.8/ccip/libraries/Client.sol";
 import {IERC20} from "@ccip/src/v0.8/vendor/openzeppelin-solidity/v4.8.3/contracts/token/ERC20/IERC20.sol";
 
-contract BridgeTokens is Script {
+contract BridgeTokensScript is Script {
     function run(
         address receiverAddress,
         uint64 destinationChainSelector,
